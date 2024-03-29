@@ -4,7 +4,7 @@ use beryllium::Sdl;
 use beryllium::video::{CreateWinArgs, RendererFlags, RendererWindow};
 use crate::color::{ColorBuilder, RGBAColor};
 pub struct GraphicsHandle{
-    window:RendererWindow,
+    pub window:RendererWindow,
     pub sdl:Sdl,
     fill:RGBAColor,
     stroke:RGBAColor,
@@ -39,60 +39,53 @@ impl GraphicsHandle{
             blend: 0,
         }
     }
-}
-pub trait Coloring{
-    fn fill(&mut self,r:f32,g:f32,b:f32){}
-    fn stroke(&mut self,r:f32,g:f32,b:f32){}
-    fn blend(&self,mode:i32){}
-    fn internally_fill(&self){}
-    fn internally_fill_stroke(&self){}
-}
-pub trait RectRendering{
-    fn rect(&self,x:f32,y:f32,w:f32,h:f32){}
-    fn rects(&mut self,rects:&[[f32;4]]){}
-}
-pub trait EllipseRendering{
-    fn ellipse(&mut self,x:f32,y:f32,w:f32,h:f32){}
-    fn circle(&mut self,x:f32,y:f32,r:f32){}
-    fn ellipses(&mut self,ellipses:&[[f32;4]]){}
-    fn circles(&mut self,circles:&[[f32;3]]){}
-}
-pub trait TriRendering{
-    fn tri(&mut self,x0:f32,y0:f32,x1:f32,y1:f32,x2:f32,y2:f32){}
-    fn tris(&mut self,tris:&[[f32;6]]){}
-}
 
-impl Coloring for GraphicsHandle{
-    fn fill(&mut self, r:f32, g:f32, b:f32){
+    //coloring
+    pub fn fill(&mut self, r:f32, g:f32, b:f32){
         self.fill = RGBAColor::from_rgb_f32(r,g,b);
     }
-    fn stroke(&mut self, r:f32, g:f32, b:f32){
+    pub fn stroke(&mut self, r:f32, g:f32, b:f32){
         self.stroke = RGBAColor::from_rgb_f32(r,g,b);
     }
-    fn blend(&self,mode:i32){
+    pub fn blend(&self,mode:i32){
         todo!()
     }
-    fn internally_fill(&self){
+    pub fn internally_fill(&mut self){
         let (r,g,b,a) = self.fill.decompose();
         self.window.set_draw_color(r,g,b,a).unwrap();
     }
-    fn internally_fill_stroke(&self){
+    pub fn internally_fill_stroke(&mut self){
         let (r,g,b,a) = self.stroke.decompose();
         self.window.set_draw_color(r,g,b,a).unwrap();
     }
-}
 
-impl RectRendering for GraphicsHandle{
-    fn rect(&self,x:f32,y:f32,w:f32,h:f32){
+    //rendering
+    pub fn background(&self, r:f32, g:f32, b:f32){
+        let (r1,g1,b1,a1) = RGBAColor::from_rgb_f32(r,g,b).decompose();
+        self.window.set_draw_color(r1,g1,b1,a1).unwrap();
+        self.window.clear().unwrap()
+    }
+    pub fn present(&self){
+        self.window.present();
+    }
+
+    //rect
+    pub fn rect(&mut self, x:f32, y:f32, w:f32, h:f32){
         self.internally_fill();
         self.window.draw_rects(&[[x as i32,y as i32,w as i32,h as i32]]).unwrap()
     }
-    fn rects(&mut self,rects:&[[f32;4]]){
+    pub fn rects(&mut self,rects:&[[f32;4]]){
         //self.window.draw_rects(rects).unwrap()
         todo!()
     }
-}
 
-impl EllipseRendering for GraphicsHandle{
-    
+    //ellipse
+    pub fn ellipse(&mut self,x:f32,y:f32,w:f32,h:f32){}
+    pub fn circle(&mut self,x:f32,y:f32,r:f32){}
+    pub fn ellipses(&mut self,ellipses:&[[f32;4]]){}
+    pub fn circles(&mut self,circles:&[[f32;3]]){}
+
+    //tri
+    pub fn tri(&mut self,x0:f32,y0:f32,x1:f32,y1:f32,x2:f32,y2:f32){}
+    pub fn tris(&mut self,tris:&[[f32;6]]){}
 }

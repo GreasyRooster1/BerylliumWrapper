@@ -1,5 +1,4 @@
 use std::cmp::min;
-use crate::handle::Coloring;
 
 pub struct RGBAColor{
     r:u8,

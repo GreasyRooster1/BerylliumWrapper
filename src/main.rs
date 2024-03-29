@@ -4,8 +4,6 @@ mod color;
 use beryllium::events::Event;
 use crate::color::{ColorBuilder, RGBAColor};
 use crate::handle::GraphicsHandle;
-use crate::handle::RectRendering;
-use crate::handle::Coloring;
 
 fn main() {
     let mut graphics = &mut GraphicsHandle::init("Wrapper Graphics Test", 500, 500, [true,false,false]);
@@ -19,7 +17,9 @@ fn main() {
                 _ => (),
             }
         }
-        graphics.fill(255.0,255.0,255.0);
+        graphics.background(0.0,127.0,255.0);
+        graphics.fill(127.0,255.0,127.0);
         graphics.rect(10.0,10.0,100.0,100.0);
+        graphics.present()
     }
 }
