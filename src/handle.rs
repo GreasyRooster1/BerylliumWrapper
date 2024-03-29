@@ -5,7 +5,7 @@ use beryllium::video::{CreateWinArgs, RendererFlags, RendererWindow};
 use crate::color::{ColorBuilder, RGBAColor};
 pub struct GraphicsHandle{
     window:RendererWindow,
-    sdl:Sdl,
+    pub sdl:Sdl,
     fill:RGBAColor,
     stroke:RGBAColor,
     blend:i32,
@@ -37,21 +37,6 @@ impl GraphicsHandle{
             fill: RGBAColor::from_grayscale_u8(255),
             stroke: RGBAColor::from_grayscale_u8(0),
             blend: 0,
-        }
-    }
-
-    pub fn start_loop<F: Fn()>(&self,loop_function: F){
-        'main_loop: loop {
-            #[allow(clippy::never_loop)]
-            #[allow(clippy::single_match)]
-            while let Some((event, _timestamp)) = self.sdl.poll_events() {
-                match event {
-                    Event::Quit => break 'main_loop,
-                    _ => (),
-                }
-                self.rect(0.0,0.0,100.0,100.0);
-                loop_function();
-            }
         }
     }
 }
