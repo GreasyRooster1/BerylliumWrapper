@@ -3,6 +3,7 @@ use beryllium::init::InitFlags;
 use beryllium::Sdl;
 use beryllium::video::{CreateWinArgs, RendererFlags, RendererWindow};
 use crate::color::{ColorBuilder, RGBAColor};
+
 pub struct GraphicsHandle{
     pub window:RendererWindow,
     pub sdl:Sdl,
